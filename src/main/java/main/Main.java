@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args){
+
         int[] array1 = { 9, 5, 8, 6, 1, 3, 7, 4, 2 };
         sort(array1);
         System.out.println(Arrays.toString(array1));
