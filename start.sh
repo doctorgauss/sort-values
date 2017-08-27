@@ -1,1 +1,1 @@
-java -jar GoEuroTest.jar Berlin
+java -jar sort-values.jar in.txt out.txt i d
