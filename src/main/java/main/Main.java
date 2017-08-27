@@ -7,6 +7,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * Программа сортировки содержимого файла.
+ * Разработана по тестовому заданию ГК ЦФТ.
+ * @author Голубцов Евгений
+ * @version 1.0
+ */
+
 public class Main {
     public static final String TYPE_STRING = "s";
     public static final String TYPE_INT = "i";
@@ -55,9 +62,18 @@ public class Main {
         }
     }
 
+    /**
+     * Метод сортировки данных
+     * @param list Список с данными, подлежащий сортировке
+     * @param typeSorting Тип сортировки - по возрастанию/убыванию
+     */
     public static <T extends Comparable<T>> void sort(List<T> list, TypeSorting typeSorting){
-        if (list == null || list.isEmpty()){
-            throw new IllegalArgumentException("Список данных не существует или пустой.");
+        if (list == null){
+            throw new IllegalArgumentException("Список данных не существует.");
+        }
+
+        if (list.isEmpty() || list.size() == 1){
+            return;
         }
 
         int i, j;
@@ -80,6 +96,13 @@ public class Main {
         }
     }
 
+    /**
+     * Метод для чтения данных из файла; возвращает список данных
+     * @param pathIn Путь к файлу с входными данными
+     * @param typeValue Тип данных - строки/целые числа
+     * @return Возвращает список отсортированных данных
+     * @throws IOException Может возникнуть исключение при чтении данных из файла
+     */
     public static List readFromFile(Path pathIn, TypeValue typeValue) throws IOException{
         try(Scanner in = new Scanner(pathIn)) {
             if (typeValue == TypeValue.typeInt) {
@@ -97,6 +120,12 @@ public class Main {
         }
     }
 
+    /**
+     * Метод для записи отсортированого списка в файл
+     * @param list Список с отсортированными данными
+     * @param pathOut Путь к файлу для сохранения отсортированных данных
+     * @throws IOException Может возникнуть исключение при записи данных в файл
+     */
     public static <T> void saveToFile(List<T> list, Path pathOut) throws IOException{
         try(PrintWriter out = new PrintWriter(Files.newBufferedWriter(pathOut, OUT_CHARSET))) {
             for (T line : list) {

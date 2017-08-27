@@ -1,2 +1,1 @@
-java -jar sort-values.jar in.txt out.txt i d
-pause
+java -jar sort-it.jar in.txt out.txt i d
