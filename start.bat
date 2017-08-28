@@ -1,1 +1,1 @@
-java -jar sort-it.jar in.txt out.txt i d
+java -jar sort-it.jar in.txt out.txt -i -d
