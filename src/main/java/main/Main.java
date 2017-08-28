@@ -15,10 +15,10 @@ import java.util.*;
  */
 
 public class Main {
-    public static final String TYPE_STRING = "s";
-    public static final String TYPE_INT = "i";
-    public static final String SORT_BY_INC = "a";
-    public static final String SORT_BY_DEC = "d";
+    public static final String TYPE_STRING = "-s";
+    public static final String TYPE_INT = "-i";
+    public static final String SORT_BY_INC = "-a";
+    public static final String SORT_BY_DEC = "-d";
     public static final Charset OUT_CHARSET = Charset.forName("UTF-8");
     public static final int ACTUAL_NUMBER_ARGUMENTS = 4;
 
