@@ -44,4 +44,9 @@ public class MainTest {
         exception.expectMessage("Список данных не существует.");
         Main.sort(null, TypeSorting.sortByDec);
     }
+
+    @Test
+    public void testReadFromFile(){
+
+    }
 }

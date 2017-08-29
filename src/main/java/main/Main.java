@@ -53,7 +53,12 @@ public class Main {
         }
 
         try {
-            List list = readFromFile(pathIn, typeValue);
+            List list;
+            if (typeValue == TypeValue.typeInt){
+                list = readFromFile(pathIn, Integer::parseInt);
+            } else {
+                list = readFromFile(pathIn, Function.identity());
+            }
             sort(list, typeSorting);
             saveToFile(list, pathOut);
             System.out.println("Данные успешно отсортированы.");
@@ -101,23 +106,16 @@ public class Main {
     /**
      * Метод для чтения данных из файла; возвращает список данных
      * @param pathIn Путь к файлу с входными данными
-     * @param typeValue Тип данных - строки/целые числа
      * @return Возвращает список отсортированных данных
      * @throws IOException Может возникнуть исключение при чтении данных из файла
      */
-    public static List readFromFile(Path pathIn, TypeValue typeValue) throws IOException{
-        try(Scanner in = new Scanner(pathIn)) {
-            if (typeValue == TypeValue.typeInt) {
-                List<Integer> list = new ArrayList<>();
-                while (in.hasNextInt()) {
-                    list.add(in.nextInt());
-                }
-                return list;
-            } else {
-                List<String> list = Files.readAllLines(pathIn);
-                return list;
-            }
-        } catch (IOException e){
+
+    public static <T> List<T> readFromFile(Path pathIn, Function<String, T> func) throws IOException {
+        try {
+            return Files.lines(pathIn)
+                    .map(func)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
             throw new IOException("Ошибка чтения из файла: " + pathIn);
         }
     }
