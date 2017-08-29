@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Программа сортировки содержимого файла.
@@ -25,7 +27,7 @@ public class Main {
     public static void main(String[] args){
         if (args.length != ACTUAL_NUMBER_ARGUMENTS){
             System.out.println("Число введённых аргументов командной строки не совпадает с актуальным.");
-            System.exit(0);
+            return;
         }
         Path pathIn = Paths.get(args[0]);
         Path pathOut = Paths.get(args[1]);
@@ -37,7 +39,7 @@ public class Main {
             typeValue = TypeValue.typeInt;
         } else {
             System.out.println("Неправильно указан параметр типа данных.");
-            System.exit(0);
+            return;
         }
 
         TypeSorting typeSorting = null;
@@ -47,7 +49,7 @@ public class Main {
             typeSorting = TypeSorting.sortByDec;
         } else {
             System.out.println("Неправильно указан параметр сортировки данных.");
-            System.exit(0);
+            return;
         }
 
         try {
@@ -118,6 +120,12 @@ public class Main {
         } catch (IOException e){
             throw new IOException("Ошибка чтения из файла: " + pathIn);
         }
+    }
+
+    public <T> List<T> readFromFile(Path path, Function<String, T> func) throws IOException {
+        return Files.lines(path)
+                .map(func)
+                .collect(Collectors.toList());
     }
 
     /**
