@@ -120,12 +120,6 @@ public class Main {
         }
     }
 
-    public <T> List<T> readFromFile(Path path, Function<String, T> func) throws IOException {
-        return Files.lines(path)
-                .map(func)
-                .collect(Collectors.toList());
-    }
-
     /**
      * Метод для записи отсортированого списка в файл
      * @param list Список с отсортированными данными
