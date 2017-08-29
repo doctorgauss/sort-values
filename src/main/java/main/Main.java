@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Программа сортировки содержимого файла.
@@ -51,7 +53,12 @@ public class Main {
         }
 
         try {
-            List list = readFromFile(pathIn, typeValue);
+            List list;
+            if (typeValue == TypeValue.typeInt){
+                list = readFromFile(pathIn, Integer::parseInt);
+            } else {
+                list = readFromFile(pathIn, Function.identity());
+            }
             sort(list, typeSorting);
             saveToFile(list, pathOut);
             System.out.println("Данные успешно отсортированы.");
@@ -116,6 +123,16 @@ public class Main {
                 return list;
             }
         } catch (IOException e){
+            throw new IOException("Ошибка чтения из файла: " + pathIn);
+        }
+    }
+
+    public static <T> List<T> readFromFile(Path pathIn, Function<String, T> func) throws IOException {
+        try {
+            return Files.lines(pathIn)
+                    .map(func)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
             throw new IOException("Ошибка чтения из файла: " + pathIn);
         }
     }
