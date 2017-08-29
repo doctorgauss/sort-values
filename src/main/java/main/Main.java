@@ -25,7 +25,7 @@ public class Main {
     public static void main(String[] args){
         if (args.length != ACTUAL_NUMBER_ARGUMENTS){
             System.out.println("Число введённых аргументов командной строки не совпадает с актуальным.");
-            System.exit(0);
+            return;
         }
         Path pathIn = Paths.get(args[0]);
         Path pathOut = Paths.get(args[1]);
@@ -37,7 +37,7 @@ public class Main {
             typeValue = TypeValue.typeInt;
         } else {
             System.out.println("Неправильно указан параметр типа данных.");
-            System.exit(0);
+            return;
         }
 
         TypeSorting typeSorting = null;
@@ -47,7 +47,7 @@ public class Main {
             typeSorting = TypeSorting.sortByDec;
         } else {
             System.out.println("Неправильно указан параметр сортировки данных.");
-            System.exit(0);
+            return;
         }
 
         try {
