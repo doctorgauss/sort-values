@@ -109,7 +109,6 @@ public class Main {
      * @return Возвращает список отсортированных данных
      * @throws IOException Может возникнуть исключение при чтении данных из файла
      */
-
     public static <T> List<T> readFromFile(Path pathIn, Function<String, T> func) throws IOException {
         try {
             return Files.lines(pathIn)

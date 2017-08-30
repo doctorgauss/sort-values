@@ -46,7 +46,9 @@ public class MainTest {
     }
 
     @Test
-    public void testReadFromFile(){
+    public void testReadFromFile() throws IOException{
+        File testFile = folder.newFile("test.txt");
+
 
     }
 }
