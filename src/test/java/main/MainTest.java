@@ -6,6 +6,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +49,10 @@ public class MainTest {
     @Test
     public void testReadFromFile() throws IOException{
         File testFile = folder.newFile("test.txt");
+        try (FileWriter fw = new FileWriter(testFile.getAbsolutePath())){
+
+        }
+
 
 
     }
