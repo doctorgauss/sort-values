@@ -1,18 +1,24 @@
 package main;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.fail;
 
 public class MainTest {
     String[] arrayString = {"23", "-5", "jgt", "ert", "1000"};
@@ -47,13 +53,49 @@ public class MainTest {
     }
 
     @Test
-    public void testReadFromFile() throws IOException{
-        File testFile = folder.newFile("test.txt");
-        try (FileWriter fw = new FileWriter(testFile.getAbsolutePath())){
+    public void testReadFromFileStringValue(){
+        File testFile;
+        try {
+            testFile = folder.newFile("test.txt");
+            Path path = Paths.get(testFile.getAbsolutePath());
+            try (FileWriter fw = new FileWriter(path.toString(), true)) {
+                for (String str : arrayString) {
+                    fw.write(str + "\n");
+                }
+                fw.flush();
+                List<String> list = Main.readFromFile(path, Function.identity());
+                assertArrayEquals("Ошибка при чтении строковых данных", arrayString, list.toArray());
+            } catch (IOException e) {
+                fail("Ошибка при создании тестового файла");
+                e.printStackTrace();
 
+            }
+        } catch (IOException e) {
+            fail("Ошибка при создании тестового файла");
+            e.printStackTrace();
         }
+    }
 
-
-
+    @Test
+    public void testReadFromFileIntValue(){
+        File testFile;
+        try {
+            testFile = folder.newFile("test.txt");
+            Path path = Paths.get(testFile.getAbsolutePath());
+            try (FileWriter fw = new FileWriter(path.toString(), true)) {
+                for (int intValue : arrayInt) {
+                    fw.write(intValue + "\n");
+                }
+                fw.flush();
+                List<Integer> list = Main.readFromFile(path, Integer::parseInt);
+                assertArrayEquals("Ошибка при чтении строковых данных", arrayInt, list.toArray());
+            } catch (IOException e) {
+                fail("Ошибка при создании тестового файла");
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            fail("Ошибка при создании тестового файла");
+            e.printStackTrace();
+        }
     }
 }
