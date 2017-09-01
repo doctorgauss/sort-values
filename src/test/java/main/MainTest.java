@@ -43,6 +43,11 @@ public class MainTest {
         Main.sort(sourceInt, TypeSorting.sortByDec);
         Integer[] expectedInteger = {2567, 145, 45, 0, -6, -6};
         assertArrayEquals("Ошибка сортировки целочисленных данных", expectedInteger, sourceInt.toArray());
+
+        List<Integer> sourceEmpty = new ArrayList<>();
+        Main.sort(sourceEmpty, TypeSorting.sortByDec);
+        Integer[] expectedEmpty = {};
+        assertArrayEquals("Ошибка сортировки целочисленных данных", expectedEmpty, sourceEmpty.toArray());
     }
 
     @Test
@@ -54,9 +59,8 @@ public class MainTest {
 
     @Test
     public void testReadFromFileStringValue(){
-        File testFile;
         try {
-            testFile = folder.newFile("test.txt");
+            File testFile = folder.newFile("test.txt");
             Path path = Paths.get(testFile.getAbsolutePath());
             try (FileWriter fw = new FileWriter(path.toString(), true)) {
                 for (String str : arrayString) {
@@ -78,9 +82,8 @@ public class MainTest {
 
     @Test
     public void testReadFromFileIntValue(){
-        File testFile;
         try {
-            testFile = folder.newFile("test.txt");
+            File testFile = folder.newFile("test.txt");
             Path path = Paths.get(testFile.getAbsolutePath());
             try (FileWriter fw = new FileWriter(path.toString(), true)) {
                 for (int intValue : arrayInt) {
@@ -97,5 +100,13 @@ public class MainTest {
             fail("Ошибка при создании тестового файла");
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testReadFromFileException() throws IOException{
+        Path path = Paths.get("notExistPath");
+        exception.expect(IOException.class);
+        exception.expectMessage("Ошибка чтения из файла: " + path);
+        Main.readFromFile(path, Integer::parseInt);
     }
 }
