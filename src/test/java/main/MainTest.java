@@ -109,4 +109,24 @@ public class MainTest {
         exception.expectMessage("Ошибка чтения из файла: " + path);
         Main.readFromFile(path, Integer::parseInt);
     }
+
+    @Test
+    public void testSaveToFile() throws IOException{
+        File testFile = folder.newFile("test.txt");
+        Path path = Paths.get(testFile.getAbsolutePath());
+        List<Integer> list = Arrays.asList(arrayInt);
+        Main.saveToFile(list, path);
+        List<Integer> listAfterRead = Main.readFromFile(path, Integer::parseInt);
+        assertArrayEquals("Ошибка при записи данных в файл", arrayInt, listAfterRead.toArray());
+    }
+
+    @Test
+    public void testSaveToFileException() throws IOException{
+        File testFile = folder.newFile("test.txt");
+        Path path = Paths.get(testFile.getAbsolutePath());
+        testFile.setWritable(false);
+        exception.expect(IOException.class);
+        exception.expectMessage("Ошибка записи в файл: " + path);
+        Main.saveToFile(new ArrayList<Integer>(), path);
+    }
 }
