@@ -6,10 +6,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -18,6 +15,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class MainTest {
@@ -128,5 +126,78 @@ public class MainTest {
         exception.expect(IOException.class);
         exception.expectMessage("Ошибка записи в файл: " + path);
         Main.saveToFile(new ArrayList<Integer>(), path);
+    }
+
+    @Test
+    public void testMainWrongArgs(){
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        Main.main(new String[0]);
+        assertEquals("Число введённых аргументов командной строки не совпадает с актуальным.", outContent.toString());
+        System.setOut(null);
+    }
+
+    @Test
+    public void testMainWrongTypeData(){
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        String[] args = {"in.txt", "out.txt", "-r", "-d"};
+        Main.main(args);
+        assertEquals("Неправильно указан параметр типа данных.", outContent.toString());
+        System.setOut(null);
+    }
+
+    @Test
+    public void testMainWrongTypeSort(){
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        String[] args = {"in.txt", "out.txt", "-i", "-y"};
+        Main.main(args);
+        assertEquals("Неправильно указан параметр сортировки данных.", outContent.toString());
+        System.setOut(null);
+    }
+
+    @Test
+    public void testMainCorrectStringData() throws IOException{
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        File inFile = folder.newFile("in.txt");
+        Path pathIn = Paths.get(inFile.getAbsolutePath());
+        File outFile = folder.newFile("out.txt");
+        Path pathOut = Paths.get(outFile.getAbsolutePath());
+        try (FileWriter fw = new FileWriter(pathIn.toString(), true)) {
+            for (int intValue : arrayInt) {
+                fw.write(intValue + "\n");
+            }
+            fw.flush();
+        }
+
+        String[] args = {pathIn.toString(), pathOut.toString(), "-s", "-d"};
+        Main.main(args);
+        assertEquals("Данные успешно отсортированы.", outContent.toString());
+        System.setOut(null);
+    }
+
+    @Test
+    public void testMainCorrectIntegerData() throws IOException{
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        File inFile = folder.newFile("in.txt");
+        Path pathIn = Paths.get(inFile.getAbsolutePath());
+        File outFile = folder.newFile("out.txt");
+        Path pathOut = Paths.get(outFile.getAbsolutePath());
+        try (FileWriter fw = new FileWriter(pathIn.toString(), true)) {
+            for (int intValue : arrayInt) {
+                fw.write(intValue + "\n");
+            }
+            fw.flush();
+        }
+
+        String[] args = {pathIn.toString(), pathOut.toString(), "-i", "-a"};
+        Main.main(args);
+        assertEquals("Данные успешно отсортированы.", outContent.toString());
+        System.setOut(null);
     }
 }

@@ -26,7 +26,7 @@ public class Main {
 
     public static void main(String[] args){
         if (args.length != ACTUAL_NUMBER_ARGUMENTS){
-            System.out.println("Число введённых аргументов командной строки не совпадает с актуальным.");
+            System.out.print("Число введённых аргументов командной строки не совпадает с актуальным.");
             return;
         }
         Path pathIn = Paths.get(args[0]);
@@ -38,7 +38,7 @@ public class Main {
         } else if (args[2].equalsIgnoreCase(TYPE_INT)) {
             typeValue = TypeValue.typeInt;
         } else {
-            System.out.println("Неправильно указан параметр типа данных.");
+            System.out.print("Неправильно указан параметр типа данных.");
             return;
         }
 
@@ -48,7 +48,7 @@ public class Main {
         } else if (args[3].equalsIgnoreCase(SORT_BY_DEC)) {
             typeSorting = TypeSorting.sortByDec;
         } else {
-            System.out.println("Неправильно указан параметр сортировки данных.");
+            System.out.print("Неправильно указан параметр сортировки данных.");
             return;
         }
 
@@ -61,7 +61,7 @@ public class Main {
             }
             sort(list, typeSorting);
             saveToFile(list, pathOut);
-            System.out.println("Данные успешно отсортированы.");
+            System.out.print("Данные успешно отсортированы.");
         } catch (IllegalArgumentException | IOException e) {
             e.printStackTrace();
         } catch (Exception e){
